@@ -23,5 +23,7 @@
 - name: docker started
   service: name=docker state=started enabled=yes
   register: status
+  ignore_errors: True
 
 - shell: docker run hello-world
+  ignore_errors: True
