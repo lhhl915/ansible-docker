@@ -1,0 +1,10 @@
+---
+#docker install
+- hosts: install
+  sudo: yes
+  roles:
+    - {role: openssl_repair}
+    - {role: openshift_install}
+    - {role: docker_install}
+    - {role: open-falcon_node_install}
+    

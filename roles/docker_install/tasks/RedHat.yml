@@ -1,0 +1,27 @@
+
+#- name: Install Docker Repository
+#  template: src=docker-repo.j2 dest=/etc/yum.repos.d/docker.repo
+
+#- name: (yum) Install SELinux python bindings
+#  yum: name=libselinux-python state=present
+#  when: ansible_selinux is defined and ansible_pkg_mgr == 'yum'
+ 
+- name: (yum) Install Docker Engine
+  yum: name=docker-1.9.1-25.el7.centos state=present
+#  yum: name={{ docker_yum_package }} state=present
+  when: ansible_pkg_mgr == 'yum'
+  notify:
+    - Restart Docker
+
+  
+- name: (dnf) Install Docker Engine
+  dnf: name=docker-engine state=present
+  when: ansible_pkg_mgr == 'dnf'
+  notify:
+    - Restart Docker
+
+- name: docker started
+  service: name=docker state=started enabled=yes
+  register: status
+
+- shell: docker run hello-world

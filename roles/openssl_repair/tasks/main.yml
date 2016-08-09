@@ -1,0 +1,42 @@
+- name: yum  install Environment files
+  yum: name={{ item }} state=installed
+  with_items:
+    - gcc
+    - gcc-c++
+    - make
+    - perl
+    - lrzsz
+
+- shell: openssl version | grep 'OpenSSL 1.0.2h'
+  ignore_errors: True
+  register: nums
+
+- name: copy package to host
+  copy: src=openssl-1.0.2h.tar.gz dest=/tmp/openssl-1.0.2h.tar.gz
+  when: nums|failed
+
+- shell: tar -xf /tmp/openssl-1.0.2h.tar.gz -C /tmp/
+  when: nums|failed
+
+- name: make and make install 
+  raw: cd /tmp/openssl-1.0.2h && ./config && make && make test && make install
+  when: nums|failed
+
+- name: ln -s
+  file: src=/usr/local/ssl/bin/openssl dest=/usr/bin/openssl state=link force=yes mode=755
+  when: nums|failed
+
+- name: remove tmp_file
+  file: path={{item}} state=absent
+  with_items:
+    - /tmp/openssl-1.0.2h
+    - /tmp/openssl-1.0.2h.tar.gz
+  when: nums|failed
+
+- name: modify /etc/ssh/sshd_config
+  lineinfile: dest=/etc/ssh/sshd_config line="Ciphers aes128-ctr,aes192-ctr,aes256-ctr \nMACs hmac-sha1,hmac-ripemd160" backup=yes
+  when: nums|failed
+
+- name: restart and enable sshd
+  service: name=sshd state=restarted enabled=yes
+  when: nums|success

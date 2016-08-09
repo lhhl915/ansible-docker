@@ -1,0 +1,14 @@
+- name: copy package to host
+  copy: src=agent_node.tar.gz dest=/usr/local mode=755
+
+- name: check open-falcon state
+  shell: netstat -ntlp | grep falcon | grep 1988 | wc -l
+  register: result
+
+- name:  release compression  tar.gz
+  shell: tar -xf /usr/local/agent_node.tar.gz -C /usr/local/
+  when: result.stdout == "0"
+
+- name: start agent
+  raw: cd /usr/local/agent && ./control restart
+  when: result.stdout == "0"

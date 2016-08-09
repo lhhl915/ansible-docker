@@ -1,0 +1,17 @@
+- name: yum update
+  yum: name=* state=latest
+
+- name: remove firewalld service
+  service: name=firewalld state=stopped enabled=no
+
+- name: yum install Environmental package
+  yum: name={{item}} state=present
+  with_items:
+    - wget
+    - git
+    - net-tools
+    - bind-utils
+    - iptables-services
+    - bridge-utils 
+    - bash-completion
+
