@@ -1,4 +1,4 @@
-## **亚信paas平台openshift环境，ansible初始化剧本（playbook)**
+## **适用于亚信paas平台openshift集群，ansible初始化剧本（playbook)**
 
 ###### mail:liuhl3@asiainfo.com
 ###### version:1.0.0
