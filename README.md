@@ -24,13 +24,13 @@ cat /etc/redhat-release  #所有节点系统版本
 
 ```
 git clone https://github.com/lhhl915/ansible-docker.git
-cd ansible-docker
 ```
 
 ---
 ## 2.编辑ansible inventory文件
 
 ```
+cd ansible-docker
 vim ansible_playbook/inventory
 
 [install]
