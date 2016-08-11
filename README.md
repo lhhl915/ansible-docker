@@ -21,8 +21,11 @@ cat /etc/redhat-release  #所有节点系统版本
 ---
 
 ## 1.下载代码：
+
+```
 git clone https://github.com/lhhl915/ansible-docker.git
 cd ansible-docker
+```
 
 ---
 ## 2.编辑ansible inventory文件
@@ -39,8 +42,9 @@ vim ansible_playbook/inventory
 ---
 
 ## 3.执行一键初始化剧本(playbook)
+```
 ansible-playbook -i ./ansible_playbook/inventory ./ansible_playbook/playbook.yml
-
+```
 
 ### **特别注意:**
 - 忽略执行过程中的错误提示
